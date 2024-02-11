@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ExpenseTracker.Models.Transaction>
+
+@{
+    ViewData["PageTitle"] = "Transactions";
+    ViewData["PageActionText"] = "+ New Transaction";
+    ViewData["PageActionUrl"] = "/Transaction/AddOrEdit";
+}
+
+
+
+<div class="row">
+    <div class="col-md-7">
+        <ejs-grid id="transaction" dataSource="Model" gridLines="None" allowSorting="true" allowPaging="true">
+            <e-grid-columns>
+                <e-grid-pagesettings pageSize="2"></e-grid-pagesettings>
+                <e-grid-column headerText="Category" field="CategoryTitleWithIcon" width="110px"></e-grid-column>
+                <e-grid-column headerText="Date" field="Date" width="90px" 
+                    type="date" format="dd/MMM/yy" textAlign="Left"></e-grid-column>
+                <e-grid-column headerText="Amount" field="FormattedAmount" width="90px" 
+                    textAlign="Right"></e-grid-column>
+                <e-grid-column headerText="Action" width="100px" template="#actionColumnTemplate"></e-grid-column>
+            </e-grid-columns>
+        </ejs-grid>
+    </div>
+    <div class="col-md-5">
+        <div class="widget h-100 d-flex justify-content-center align-items-center">
+            <i class="fa-solid fa-shapes fa-2xl"></i>
+        </div>
+    </div>
+</div>
+
+<script id="actionColumnTemplate" type="text/x-template">
+    <div class="d-flex flex-row justify-content-start">
+        <a class="btn btn-sm no-a-decoration" href="/Transaction/AddOrEdit/${TransactionId}">
+            <i class="fa-sharp fa-solid fa-pen"></i>
+        </a>
+        <form action="/Transaction/Delete/${TransactionId}" method="post">
+        @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-sm btn-link no-a-decoration"
+            onclick="return confirm(&quot; Are you sure autofocus delete this record??&quot;)">
+                <i class="fa-solid fa-trash-can fa-lg text-danger"></i>
+            </button>
+        </form>
+    </div>
+</script>
